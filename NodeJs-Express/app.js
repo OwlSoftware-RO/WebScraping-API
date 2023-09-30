@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+const cors = require('cors');
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -10,8 +11,10 @@ var usersRouter = require('./routes/users');
 var webScraperRouter = require('./routes/web-scraper');
 
 var app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
