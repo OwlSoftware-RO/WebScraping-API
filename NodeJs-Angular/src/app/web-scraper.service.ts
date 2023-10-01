@@ -8,7 +8,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 export class WebScraperService {
   constructor(private http: HttpClient) { }
 
-  scrapeWeb(url: string): Observable<any[]> {
+  scrapeWeb(url: string): Observable<any> {
       //return this.http.get<any[]>(`http://localhost:3000/webScraper/targetUrl=${url}`);
       //.pipe(map(retVal => retVal.Results))
 

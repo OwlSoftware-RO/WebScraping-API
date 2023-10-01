@@ -20,12 +20,11 @@ export class WebScraperComponent implements OnInit{
   constructor(private wsService: WebScraperService) {
     this.targetUrlChanged.pipe(debounceTime(300)).subscribe(() => {
       this.scrapedResults = this.wsService.scrapeWeb(this.targetUrl);
+      
+      this.scrapedResults.subscribe(result =>{
+        console.log(result)
+      })
     });
-  }
-
-  filterData(event: any){
-    console.log('I will filter the data');
-    console.log(this.targetUrl)
   }
 
   changed(event: any) {

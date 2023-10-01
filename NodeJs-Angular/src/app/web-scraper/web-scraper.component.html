@@ -5,12 +5,5 @@
 </ng-template>
 
 <ng-container *ngIf="targetUrl">
-    <ul *ngIf="(scrapedResults | async) as elements; else loadingTmpl">
-        <li *ngFor="let element of elements">
-            
-        </li>
-        <li *ngIf="!elements.length">
-            No elements witin the webpage
-        </li>
-    </ul>
+   
 </ng-container>
