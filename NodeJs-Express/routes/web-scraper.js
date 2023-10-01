@@ -3,6 +3,7 @@ var router = express.Router();
 
 const cheerio = require('cheerio');
 const axios = require('axios');
+const puppeteer = require('puppeteer');
 
 
 /* GET webScraping url. */
@@ -11,7 +12,9 @@ router.post('/', async (req, res) => {
     let data = req.body;
     if(data['targetUrl'] != null || data['targetUrl'] != undefined){
         //res.send(await scrapeWeb(data['targetUrl']))
-        res.send(await scrapeWebAxios(data['targetUrl']))
+        //res.send(await scrapeWebAxios(data['targetUrl']))
+        res.send(await scrapingPup(data['targetUrl']))
+        
     }else{
         res.send('No founded url key');
     }
@@ -40,11 +43,34 @@ async function scrapeWebAxios(targetUrl){
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
         }
     })
-    //return axiosResponse.data;
+    return axiosResponse.data;
     const $ = cheerio.load(axiosResponse.data)
-    return $.text();
     var value = $('#__next').text();
     return value;
 }
 
+async function scrapingPup(targetUrl){
+    var listOfPosts = [];
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+    await page.goto(targetUrl);
+    await page.waitForSelector('#__next');
+    var result = await page.evaluate(() => {
+        var listOfPosts = [];
+        let bodyData = document.getElementById('__next').firstElementChild.firstElementChild.firstElementChild.lastElementChild;
+        let listOfElements = bodyData.children;
+        Array.from(listOfElements).forEach(element => {
+            var elm = {};
+            var h3 = '';
+            var p = '';
+                h3 = element.lastElementChild.children[1].firstElementChild.innerText;
+                p = element.lastElementChild.children[1].lastElementChild.innerText;
+            elm.p = p;
+            elm.h = h3;
+            listOfPosts.push(elm);
+        });
+        return listOfPosts
+    });
+    return result;
+}
 module.exports = router;
