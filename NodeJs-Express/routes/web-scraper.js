@@ -71,6 +71,7 @@ async function scrapingPup(targetUrl){
         });
         return listOfPosts
     });
+    browser.close();
     return result;
 }
 module.exports = router;

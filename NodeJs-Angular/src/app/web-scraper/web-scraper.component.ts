@@ -11,7 +11,8 @@ export class WebScraperComponent implements OnInit{
   
   public targetUrl: string = '';
   public targetUrlChanged = new Subject<string>();
-  public scrapedResults: Observable<any[]> = new Observable;
+  public scrapedObs: Observable<any[]> = new Observable;
+  public scrapedResults: any[] = [];
 
   ngOnInit(): void {
     
@@ -19,10 +20,10 @@ export class WebScraperComponent implements OnInit{
 
   constructor(private wsService: WebScraperService) {
     this.targetUrlChanged.pipe(debounceTime(300)).subscribe(() => {
-      this.scrapedResults = this.wsService.scrapeWeb(this.targetUrl);
-      
-      this.scrapedResults.subscribe(result =>{
-        console.log(result)
+      this.scrapedObs = this.wsService.scrapeWeb(this.targetUrl);
+
+      this.scrapedObs.subscribe(result =>{
+        this.scrapedResults = result;
       })
     });
   }
