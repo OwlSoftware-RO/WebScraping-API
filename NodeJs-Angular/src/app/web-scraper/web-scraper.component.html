@@ -1,12 +1,30 @@
-<input class="form-control" placeholder="http://localhost:4200/" [(ngModel)]="targetUrl" (ngModelChange)="changed($event)"/>
-
-<ng-template #loadingTmpl>
-    <div>Loading...</div>
-</ng-template>
-
-<ng-container *ngIf="targetUrl">
-    <div class="card card-block" *ngFor="let result of scrapedResults">
-        <h4 class="card-title">{{result.h}}</h4>
-        <p class="card-text">{{result.p}}</p>
+<div class="container">
+    <a href="https://wsa-test.vercel.app">https://wsa-test.vercel.app</a>
+    <button class="btn btn-primary" ngxClipboard [cbContent]="'https://wsa-test.vercel.app'" style="margin-left: 10px;">Copy</button>
+    <br>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="includeImages">
+        <label class="form-check-label" for="flexCheckDefault">
+            Inlcude images
+        </label>
     </div>
-</ng-container>
+    <br>
+    <input class="form-control" placeholder="http://localhost:4200/" style="width: 250px;" [(ngModel)]="targetUrl" (ngModelChange)="changed($event)"/>
+    <button class="btn btn-primary" style="margin: 10px;" (click)="analizeOnDemand()"> Analize web </button>
+
+    <div class="alert alert-primary" role="alert">
+        Would you like to inlcude images ?
+        <button class="btn btn-primary" style="margin: 10px;" (click)="analizeOnDemand()"> Include </button>
+    </div>
+
+    <ng-template #loadingTmpl>
+        <div>Loading...</div>
+    </ng-template>
+
+    <ng-container *ngIf="targetUrl">
+        <div class="card card-block" *ngFor="let result of scrapedResults">
+            <h4 class="card-title">{{result.h}}</h4>
+            <p class="card-text">{{result.p}}</p>
+        </div>
+    </ng-container>
+</div>

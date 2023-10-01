@@ -8,11 +8,12 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 export class WebScraperService {
   constructor(private http: HttpClient) { }
 
-  scrapeWeb(url: string): Observable<any> {
+  scrapeWeb(url: string, includeImages: boolean): Observable<any> {
+      console.log(includeImages)
       //return this.http.get<any[]>(`http://localhost:3000/webScraper/targetUrl=${url}`);
       //.pipe(map(retVal => retVal.Results))
 
-      return this.http.post<any>('http://localhost:3000/webScraper',{ targetUrl: url });    
+      return this.http.post<any>('http://localhost:3000/webScraper',{ targetUrl: url, includeImages: includeImages});    
       //<any>(`http://localhost:3000/webScraper/targetUrl=${url}`);
       //.pipe(map(retVal => retVal.Results))
   };

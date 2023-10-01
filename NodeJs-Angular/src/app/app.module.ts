@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WebScraperComponent } from './web-scraper/web-scraper.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ClipboardModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

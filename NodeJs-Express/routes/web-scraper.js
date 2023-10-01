@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     if(data['targetUrl'] != null || data['targetUrl'] != undefined){
         //res.send(await scrapeWeb(data['targetUrl']))
         //res.send(await scrapeWebAxios(data['targetUrl']))
-        res.send(await scrapingPup(data['targetUrl']))
+        res.send(await scrapingPup(data['targetUrl'],data['includeImages']))
         
     }else{
         res.send('No founded url key');
@@ -49,29 +49,42 @@ async function scrapeWebAxios(targetUrl){
     return value;
 }
 
-async function scrapingPup(targetUrl){
+async function scrapingPup(targetUrl,includeImages){
     var listOfPosts = [];
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.goto(targetUrl);
-    await page.waitForSelector('#__next');
-    var result = await page.evaluate(() => {
-        var listOfPosts = [];
-        let bodyData = document.getElementById('__next').firstElementChild.firstElementChild.firstElementChild.lastElementChild;
-        let listOfElements = bodyData.children;
-        Array.from(listOfElements).forEach(element => {
-            var elm = {};
-            var h3 = '';
-            var p = '';
+    try{
+        await page.waitForSelector('#__next');
+        var result = await page.evaluate(() => {
+            var listOfPosts = [];
+            let bodyData = document.getElementById('__next').firstElementChild.firstElementChild.firstElementChild.lastElementChild;
+            let listOfElements = bodyData.children;
+            Array.from(listOfElements).forEach(element => {
+                var elm = {};
+                var h3 = '';
+                var p = '';
+                //var image = '';
+
                 h3 = element.lastElementChild.children[1].firstElementChild.innerText;
                 p = element.lastElementChild.children[1].lastElementChild.innerText;
-            elm.p = p;
-            elm.h = h3;
-            listOfPosts.push(elm);
+
+                // if(includeImages){
+                //     // image = element.firstElementChild.firstElementChild.getAttribute('src')
+                // }
+
+                elm.p = p;
+                elm.h = h3;
+                // elm.image = image;
+                listOfPosts.push(elm);
+            });
+            return listOfPosts
         });
-        return listOfPosts
-    });
-    browser.close();
-    return result;
+        browser.close();
+        return result;
+    } catch (err){
+        browser.close();
+        return null;
+    }
 }
 module.exports = router;
